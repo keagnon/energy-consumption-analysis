@@ -4,6 +4,8 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
+import plotly.express as px
+
 
 # Configure la page pour utiliser la mise en page large
 st.set_page_config(layout="wide")
@@ -106,56 +108,31 @@ with tab1:
         ))
 
 
+# Contenu de l'onglet Statistique
+df_geo = pd.DataFrame({
+    'City': ['Paris', 'Madrid', 'Berlin', 'Rome', 'Lisbon'],
+    'lat': [48.8566, 40.4168, 52.5200, 41.9028, 38.7223],
+    'lon': [2.3522, -3.7038, 13.4050, 12.4964, -9.1393],
+    'Value': [4, 2, 5, 1, 3]  # Cette colonne pourrait représenter n'importe quelle donnée que vous voulez montrer
+})
 
 # Contenu de l'onglet Statistique
 with tab2:
     st.header("Statistique")
-    # Ajoutez ici le contenu de votre onglet statistique
-    st.write("Ici, vous pouvez afficher des statistiques descriptives, des tableaux de données, etc.")
 
+    col1, col2 = st.columns(2)
 
     with col1:
-        plot_type = st.selectbox(
-            'Choisissez un type de visualisation',
-            ('Histogramme', 'Graphique à barres', 'Lineplot', 'Boxplot')
-        )
-        plot_type = st.selectbox(
-            'Choisissez un type de visualisation',
-            ('Histogramme', 'Graphique à barres', 'Lineplot', 'Boxplot')
-        )
-        plot_type = st.selectbox(
-            'Choisissez un type de visualisation',
-            ('Histogramme', 'Graphique à barres', 'Lineplot', 'Boxplot')
-        )
-        plot_type = st.selectbox(
-            'Choisissez un type de visualisation',
-            ('Histogramme', 'Graphique à barres', 'Lineplot', 'Boxplot')
-        )
+        # Trois selectbox pour différentes sélections
+        select1 = st.selectbox('Sélection 1', df_geo['City'], key='1')
+        select2 = st.selectbox('Sélection 2', df_geo['City'], key='2')
+        select3 = st.selectbox('Sélection 3', df_geo['City'], key='3')
 
     with col2:
-        """Création d'un DataFrame associatif pour les échanges """
-        echanges_geo = pd.DataFrame({
-            'Colonne': ['ech_comm_espagne', 'ech_comm_allemagne', 'ech_comm_italie'],  # Ajoutez plus selon vos colonnes
-            'Pays': ['Espagne', 'Allemagne', 'Italie'],
-            'Latitude': [40.463667, 51.165691, 41.87194],
-            'Longitude': [-3.74922, 10.451526, 12.56738]
-        })
+        df = pd.DataFrame(np.random.randn(1000, 2) / [50, 50] + [37.76, -122.4],
+        columns=['lat', 'lon'])
 
-        # Exemple d'utilisation : afficher ce DataFrame
-        print(echanges_geo)
-
-        fig = go.Figure(data=go.Scattergeo(
-            lon = echanges_geo['Longitude'],
-            lat = echanges_geo['Latitude'],
-            text = echanges_geo['Pays'],
-            mode = 'markers',
-            marker = dict(size = 8, color = 'red'),
-        ))
-
-        fig.update_layout(title = 'Échanges d\'énergie', geo_scope='europe')
-        fig.show()
-
-
+        st.map(df)
 
 # Contenu de l'onglet Modèle
 with tab3:
