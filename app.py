@@ -1,141 +1,149 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
-import seaborn as sns
 import matplotlib.pyplot as plt
-import plotly.graph_objects as go
 import plotly.express as px
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
+import numpy as np
 
-
-# Configure la page pour utiliser la mise en page large
+# Configuration de la page
 st.set_page_config(layout="wide")
-
-df = pd.DataFrame({
-    'A': np.random.rand(100),
-    'B': np.random.randint(1, 100, 100),
-    'C': np.random.choice(['X', 'Y', 'Z'], 100)
-})
-
-df1 = pd.DataFrame(np.random.randint(0,100,size=(10, 4)), columns=list('ABCD'))
-df2 = pd.DataFrame(np.random.randint(0,100,size=(10, 4)), columns=list('EFGH'))
-
-# Insérez du CSS personnalisé pour styliser les DataFrames
-st.markdown("""
-<style>
-table {
-    border-collapse: collapse;
-    border-spacing: 0;
-    width: 100%;
-    border: 1px solid #ddd;
-}
-th, td {
-    text-align: left;
-    padding: 8px;
-}
-tr:nth-child(even){background-color: #f2f2f2}
-th {
-    background-color: #f2f2f2;
-    color: black;
-}
-</style>
-""", unsafe_allow_html=True)
-
 st.title('Analyse de la Consommation Énergétique')
 
+# Chargement des données
+data_path = 'data_clean.csv'
+data_clean = pd.read_csv(data_path,nrows =500)
+
+data_path2 = 'data_no_clean.csv'
+data_no_clean = pd.read_csv(data_path2, sep=';', header=0, index_col=False,nrows =500)
+
+# Tabs
 tab1, tab2, tab3 = st.tabs(["Visualisation", "Statistique", "Modèle"])
 
-# Ajout d'une nouvelle ligne pour les histogrammes
+# Fonctions de visualisation
 def plot_histogram(data, columns):
     fig, ax = plt.subplots()
     data[columns].hist(bins=20, ax=ax, alpha=0.7, figsize=(10, 5))
+    plt.title('Histogramme de la Consommation')
     return fig
 
 # Contenu de l'onglet Visualisation
 with tab1:
     st.header("Visualisation de la Consommation Énergétique")
-    # Première ligne pour les histogrammes
     col1, col2 = st.columns(2)
     with col1:
-        # Multiselect pour permettre la sélection de plusieurs colonnes
-        selected_columns = st.multiselect('Choisissez une ou plusieurs colonnes', df.columns)
+        selected_columns = st.multiselect('Choisissez une ou plusieurs colonnes', data_clean.columns)
 
     with col2:
-        # Menu déroulant pour sélectionner un type de visualisation
         plot_type = st.selectbox(
             'Choisissez un type de visualisation',
-            ('Histogramme', 'Graphique à barres', 'Lineplot', 'Boxplot')
+            ['Histogramme', 'Graphique à barres', 'Lineplot', 'Boxplot']
         )
 
-    # Générez la visualisation basée sur la sélection de l'utilisateur
-    if plot_type == 'Histogramme':
-        pass
-    elif plot_type == 'Graphique à barres':
-        pass
-    elif plot_type == 'Lineplot':
-        pass
-    elif plot_type == 'Boxplot':
-        pass
-    elif plot_type == 'Scatterplot':
-       pass
-    elif plot_type == 'Barplot':
-        pass
-    else:
-        st.error("Ce type de visualisation n'est pas pris en charge.")
 
-    # Deuxième ligne pour les histogrammes
     col3, col4 = st.columns(2)
-    selected_columns_df1=['A']
-    selected_columns_df2=['E']
+
     with col3:
-        if selected_columns_df1:
-            st.pyplot(plot_histogram(df1, selected_columns_df1))
+        if selected_columns:
+            if plot_type == 'Histogramme':
+                numeric_columns = data_clean[selected_columns].select_dtypes(include=['float64', 'int64']).columns
+                if len(numeric_columns) > 0:
+                    rows = len(selected_columns) // 2 + (1 if len(selected_columns) % 2 > 0 else 0)
+                    cols = 2  # Nous voulons 2 colonnes par ligne
+
+                    fig = make_subplots(rows=rows, cols=cols, subplot_titles=selected_columns)
+                    for i, col in enumerate(selected_columns, start=1):
+                        row = (i-1) // 2 + 1  # Calculer la ligne actuelle
+                        col_pos = (i-1) % 2 + 1  # Calculer la position de la colonne dans la ligne
+                        fig.add_trace(go.Histogram(x=data_clean[col]), row=row, col=col_pos)
+
+                    fig.update_layout(height=400*rows, showlegend=False)
+                    st.plotly_chart(fig)
+                else:
+                    st.error("Veuillez sélectionner des colonnes numériques pour ce type de visualisation.")
+
+            elif plot_type == 'Graphique à barres':
+                fig = px.bar(data_clean, x=selected_columns[0], y=selected_columns[1:])
+                st.plotly_chart(fig)
+            elif plot_type == 'Lineplot':
+                fig = px.line(data_clean, x=selected_columns[0], y=selected_columns[1:])
+                st.plotly_chart(fig)
+            elif plot_type == 'Boxplot':
+                # Filtrer pour garder uniquement les colonnes numériques
+                numeric_columns = data_clean[selected_columns].select_dtypes(include=['float64', 'int64']).columns
+                if len(numeric_columns) > 0:
+                    fig = px.box(data_clean, y=numeric_columns)
+                    st.plotly_chart(fig)
+                else:
+                    st.error("Veuillez sélectionner des colonnes numériques pour ce type de visualisation.")
 
     with col4:
-        if selected_columns_df2:
-            st.pyplot(plot_histogram(df2, selected_columns_df2))
+        if selected_columns:
+            if plot_type == 'Histogramme':
+                numeric_columns = data_no_clean[selected_columns].select_dtypes(include=['float64', 'int64']).columns
+                if len(numeric_columns) > 0:
+                   # Déterminer le nombre de lignes pour les subplots
+                    rows = len(selected_columns) // 2 + (1 if len(selected_columns) % 2 > 0 else 0)
+                    cols = 2  # Nous voulons 2 colonnes par ligne
 
-    # Utilisation des expanders pour afficher les DataFrames
-    with st.expander("Données brutes"):
-        # Afficher le DataFrame df1 avec style
-        st.dataframe(df1.style.set_table_styles(
-            [{'selector': 'th', 'props': [('font-size', '15pt'), ('text-align', 'center')]}]
-        ))
+                    fig = make_subplots(rows=rows, cols=cols, subplot_titles=selected_columns)
+                    for i, col in enumerate(selected_columns, start=1):
+                        row = (i-1) // 2 + 1  # Calculer la ligne actuelle
+                        col_pos = (i-1) % 2 + 1  # Calculer la position de la colonne dans la ligne
+                        fig.add_trace(go.Histogram(x=data_no_clean[col]), row=row, col=col_pos)
 
-    with st.expander("Données nettoyer"):
-        # Afficher le DataFrame df2 avec style
-        st.dataframe(df2.style.set_table_styles(
-            [{'selector': 'th', 'props': [('font-size', '15pt'), ('text-align', 'center')]}]
-        ))
+                    fig.update_layout(height=400*rows, showlegend=False)
+                    st.plotly_chart(fig)
+                else:
+                    st.error("Veuillez sélectionner des colonnes numériques pour ce type de visualisation.")
 
+            elif plot_type == 'Graphique à barres':
+                fig = px.bar(data_no_clean, x=selected_columns[0], y=selected_columns[1:])
+                st.plotly_chart(fig)
+            elif plot_type == 'Lineplot':
+                fig = px.line(data_no_clean, x=selected_columns[0], y=selected_columns[1:])
+                st.plotly_chart(fig)
+            elif plot_type == 'Boxplot':
+                # Filtrer pour garder uniquement les colonnes numériques
+                numeric_columns = data_no_clean[selected_columns].select_dtypes(include=['float64', 'int64']).columns
+                if len(numeric_columns) > 0:
+                    fig = px.box(data_no_clean, y=numeric_columns)
+                    st.plotly_chart(fig)
+                else:
+                    st.error("Veuillez sélectionner des colonnes numériques pour ce type de visualisation.")
 
-# Contenu de l'onglet Statistique
-df_geo = pd.DataFrame({
-    'City': ['Paris', 'Madrid', 'Berlin', 'Rome', 'Lisbon'],
-    'lat': [48.8566, 40.4168, 52.5200, 41.9028, 38.7223],
-    'lon': [2.3522, -3.7038, 13.4050, 12.4964, -9.1393],
-    'Value': [4, 2, 5, 1, 3]  # Cette colonne pourrait représenter n'importe quelle donnée que vous voulez montrer
-})
-
+        # Affichage des données
+    with st.expander("Voir les données"):
+        st.dataframe(data_clean)
+        # Affichage des données
+    with st.expander("Voir les données"):
+        st.dataframe(data_no_clean)
 # Contenu de l'onglet Statistique
 with tab2:
-    st.header("Statistique")
+    st.header("Statistiques descriptives et Matrice de Corrélation")
 
-    col1, col2 = st.columns(2)
+    # Statistiques descriptives
+    st.write("Statistiques descriptives :")
+    st.write(data_clean.describe())
 
-    with col1:
-        # Trois selectbox pour différentes sélections
-        select1 = st.selectbox('Sélection 1', df_geo['City'], key='1')
-        select2 = st.selectbox('Sélection 2', df_geo['City'], key='2')
-        select3 = st.selectbox('Sélection 3', df_geo['City'], key='3')
+    # Exclure les colonnes non numériques pour la matrice de corrélation
+    numerical_columns = data_clean.select_dtypes(include=[np.number]).columns
+    corr_data = data_clean[numerical_columns]
 
-    with col2:
-        df = pd.DataFrame(np.random.randn(1000, 2) / [50, 50] + [37.76, -122.4],
-        columns=['lat', 'lon'])
+    # Matrice de corrélation
+    st.write("Matrice de corrélation :")
+    corr_matrix = corr_data.corr()
+    st.write(corr_matrix)
 
-        st.map(df)
+    # Heatmap de la matrice de corrélation
+    st.write("Heatmap de la matrice de corrélation :")
+    fig, ax = plt.subplots()
+    sns.heatmap(corr_matrix, annot=True, cmap='coolwarm', fmt=".2f", ax=ax)
+    st.pyplot(fig)
 
 # Contenu de l'onglet Modèle
 with tab3:
     st.header("Modèle")
-    # Ajoutez ici le contenu de votre onglet modèle
     st.write("Ici, vous pouvez intégrer des modèles prédictifs, afficher les résultats de modélisation, etc.")
+
+
