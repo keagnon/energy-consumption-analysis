@@ -6,6 +6,9 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import numpy as np
 import seaborn as sns
+import folium
+from streamlit_folium import st_folium
+from folium.plugins import MarkerCluster
 
 # Configuration de la page
 st.set_page_config(layout="wide")
@@ -40,8 +43,6 @@ with tab1:
             'Choisissez un type de visualisation',
             ['Histogramme', 'Graphique à barres', 'Lineplot', 'Boxplot']
         )
-
-
     col3, col4 = st.columns(2)
 
     with col3:
@@ -50,12 +51,12 @@ with tab1:
                 numeric_columns = data_clean[selected_columns].select_dtypes(include=['float64', 'int64']).columns
                 if len(numeric_columns) > 0:
                     rows = len(selected_columns) // 2 + (1 if len(selected_columns) % 2 > 0 else 0)
-                    cols = 2  # Nous voulons 2 colonnes par ligne
+                    cols = 2
 
                     fig = make_subplots(rows=rows, cols=cols, subplot_titles=selected_columns)
                     for i, col in enumerate(selected_columns, start=1):
-                        row = (i-1) // 2 + 1  # Calculer la ligne actuelle
-                        col_pos = (i-1) % 2 + 1  # Calculer la position de la colonne dans la ligne
+                        row = (i-1) // 2 + 1
+                        col_pos = (i-1) % 2 + 1
                         fig.add_trace(go.Histogram(x=data_clean[col]), row=row, col=col_pos)
 
                     fig.update_layout(height=400*rows, showlegend=False)
@@ -70,7 +71,7 @@ with tab1:
                 fig = px.line(data_clean, x=selected_columns[0], y=selected_columns[1:])
                 st.plotly_chart(fig)
             elif plot_type == 'Boxplot':
-                # Filtrer pour garder uniquement les colonnes numériques
+
                 numeric_columns = data_clean[selected_columns].select_dtypes(include=['float64', 'int64']).columns
                 if len(numeric_columns) > 0:
                     fig = px.box(data_clean, y=numeric_columns)
@@ -83,14 +84,14 @@ with tab1:
             if plot_type == 'Histogramme':
                 numeric_columns = data_no_clean[selected_columns].select_dtypes(include=['float64', 'int64']).columns
                 if len(numeric_columns) > 0:
-                   # Déterminer le nombre de lignes pour les subplots
+
                     rows = len(selected_columns) // 2 + (1 if len(selected_columns) % 2 > 0 else 0)
-                    cols = 2  # Nous voulons 2 colonnes par ligne
+                    cols = 2
 
                     fig = make_subplots(rows=rows, cols=cols, subplot_titles=selected_columns)
                     for i, col in enumerate(selected_columns, start=1):
-                        row = (i-1) // 2 + 1  # Calculer la ligne actuelle
-                        col_pos = (i-1) % 2 + 1  # Calculer la position de la colonne dans la ligne
+                        row = (i-1) // 2 + 1
+                        col_pos = (i-1) % 2 + 1
                         fig.add_trace(go.Histogram(x=data_no_clean[col]), row=row, col=col_pos)
 
                     fig.update_layout(height=400*rows, showlegend=False)
@@ -105,7 +106,7 @@ with tab1:
                 fig = px.line(data_no_clean, x=selected_columns[0], y=selected_columns[1:])
                 st.plotly_chart(fig)
             elif plot_type == 'Boxplot':
-                # Filtrer pour garder uniquement les colonnes numériques
+
                 numeric_columns = data_no_clean[selected_columns].select_dtypes(include=['float64', 'int64']).columns
                 if len(numeric_columns) > 0:
                     fig = px.box(data_no_clean, y=numeric_columns)
@@ -113,30 +114,52 @@ with tab1:
                 else:
                     st.error("Veuillez sélectionner des colonnes numériques pour ce type de visualisation.")
 
-        # Affichage des données
+    # Affichage des données
     with st.expander("Voir les données"):
         st.dataframe(data_clean)
-        # Affichage des données
+
     with st.expander("Voir les données"):
         st.dataframe(data_no_clean)
-# Contenu de l'onglet Statistique
+
+# Chargement des données
+data_clean_enriched = pd.read_csv('data_clean_enriched.csv')
+data_clean_enriched['Date'] = pd.to_datetime(data_clean_enriched['Date'])
+
 with tab2:
-    st.header("Statistiques descriptives et Matrice de Corrélation")
-    col1, col2 = st.columns(2)
 
-    # Exclure les colonnes non numériques pour la matrice de corrélation
-    numerical_columns = data_clean.select_dtypes(include=[np.number]).columns
-    corr_data = data_clean[numerical_columns]
+    # Aggrégation des données par région pour la carte
+    aggregated_data = data_clean_enriched.groupby(['Région', 'Latitude', 'Longitude'])\
+                                        .agg({'Consommation brute totale (MW)': 'sum'})\
+                                        .reset_index()
 
-    # Matrice de corrélation
-    st.write("Matrice de corrélation :")
-    corr_matrix = corr_data.corr()
-    st.write(corr_matrix)
+    # Fonction pour créer une carte avec Folium
+    def create_folium_map(data):
+        m = folium.Map(location=[46.2276, 2.2137], zoom_start=6)
+        for idx, row in data.iterrows():
+            folium.CircleMarker(
+                location=[row['Latitude'], row['Longitude']],
+                radius=5,
+                popup=f"{row['Région']}: {row['Consommation brute totale (MW)']} MW",
+                color='blue',
+                fill=True,
+                fill_color='blue'
+            ).add_to(m)
+        return m
+
+    # Création et affichage de la carte
+    st.header("Carte de consommation par région")
+    folium_map = create_folium_map(aggregated_data)
+    st_folium(folium_map, width=2725, height=500)
 
     # Statistiques descriptives
-    st.write("Statistiques descriptives :")
-    st.write(data_clean.describe())
+    st.header("Statistiques descriptives")
+    numerical_columns = data_clean_enriched.select_dtypes(include=[np.number]).columns
+    st.write(data_clean_enriched[numerical_columns].describe())
 
+    # Matrice de corrélation
+    st.header("Matrice de corrélation")
+    corr_matrix = data_clean_enriched[numerical_columns].corr()
+    st.write(corr_matrix)
 
 # Contenu de l'onglet Modèle
 with tab3:
