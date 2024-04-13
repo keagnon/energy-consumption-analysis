@@ -5,6 +5,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import numpy as np
+import seaborn as sns
 
 # Configuration de la page
 st.set_page_config(layout="wide")
@@ -121,10 +122,7 @@ with tab1:
 # Contenu de l'onglet Statistique
 with tab2:
     st.header("Statistiques descriptives et Matrice de Corrélation")
-
-    # Statistiques descriptives
-    st.write("Statistiques descriptives :")
-    st.write(data_clean.describe())
+    col1, col2 = st.columns(2)
 
     # Exclure les colonnes non numériques pour la matrice de corrélation
     numerical_columns = data_clean.select_dtypes(include=[np.number]).columns
@@ -135,11 +133,10 @@ with tab2:
     corr_matrix = corr_data.corr()
     st.write(corr_matrix)
 
-    # Heatmap de la matrice de corrélation
-    st.write("Heatmap de la matrice de corrélation :")
-    fig, ax = plt.subplots()
-    sns.heatmap(corr_matrix, annot=True, cmap='coolwarm', fmt=".2f", ax=ax)
-    st.pyplot(fig)
+    # Statistiques descriptives
+    st.write("Statistiques descriptives :")
+    st.write(data_clean.describe())
+
 
 # Contenu de l'onglet Modèle
 with tab3:
