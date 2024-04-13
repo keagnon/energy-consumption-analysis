@@ -15,10 +15,10 @@ st.set_page_config(layout="wide")
 st.title('Analyse de la Consommation Énergétique')
 
 # Chargement des données
-data_path = 'data_clean.csv'
+data_path = 'dataset/data_clean.csv'
 data_clean = pd.read_csv(data_path,nrows =500)
 
-data_path2 = 'data_no_clean.csv'
+data_path2 = 'dataset/data_no_clean.csv'
 data_no_clean = pd.read_csv(data_path2, sep=';', header=0, index_col=False,nrows =500)
 
 # Tabs
@@ -122,7 +122,7 @@ with tab1:
         st.dataframe(data_no_clean)
 
 # Chargement des données
-data_clean_enriched = pd.read_csv('data_clean_enriched.csv')
+data_clean_enriched = pd.read_csv('dataset/data_clean_enriched.csv')
 data_clean_enriched['Date'] = pd.to_datetime(data_clean_enriched['Date'])
 
 with tab2:
