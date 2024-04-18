@@ -54,7 +54,7 @@ with tab1:
             numeric_columns = data_clean[selected_columns].select_dtypes(include=['float64', 'int64']).columns
             if len(numeric_columns) > 0:
                 # Calcul du nombre de lignes et de colonnes en fonction du nombre de colonnes sélectionnées
-                rows = (len(selected_columns) - 1) // 3 + 1  # Nombre de lignes nécessaire
+                rows = (len(selected_columns) - 1) // 3 + 1
                 cols = min(3, len(selected_columns))  # Au plus trois colonnes par ligne
 
                 # Création de la figure
@@ -80,8 +80,6 @@ with tab1:
             else:
                 st.error("Veuillez sélectionner des colonnes numériques pour ce type de visualisation.")
 
-
-
         elif plot_type == 'Graphique à barres':
                 fig = px.bar(data_clean, x=selected_columns[0], y=selected_columns[1:])
                 fig.update_layout(width=1600)
@@ -98,26 +96,25 @@ with tab1:
                     fig.update_layout(width=1600)
                     st.plotly_chart(fig)
                 else:
-                    st.error("Veuillez sélectionner des colonnes numériques pour ce type de visualisation.")
+                    st.error("Veuillez sélectionner des colonnes numériques pour ce type de visualisation")
 
 
     data_clean_enriched=data_clean
-    # Assurez-vous que la date est convertie en datetime
     data_clean_enriched['Date'] = pd.to_datetime(data_clean_enriched['Date'])
 
-    # Obtenir la liste des régions uniques pour le selectbox
+    # Obtention de la liste des régions uniques pour le selectbox
     regions = data_clean_enriched['Région'].unique()
     selected_region = st.selectbox('Choisissez une région', regions)
 
-    # Filtrer pour la région spécifique choisie
+    # Filtre pour la région spécifique choisie
     region_data = data_clean_enriched[data_clean_enriched['Région'] == selected_region]
 
-    # Créer le graphique de série temporelle
+    # Création de graphique de série temporelle
     def plot_time_series(region_data):
         plt.figure(figsize=(15, 7))
         plt.plot(region_data['Date'], region_data['Consommation brute totale (MW)'], label='Consommation de gaz')
 
-        # Ajouter des marqueurs pour les événements
+        # Ajout des marqueurs pour les événements
         if 'mouvement_social' in region_data.columns:
             for date in region_data[region_data['mouvement_social']]['Date']:
                 plt.axvline(x=date, color='red', linestyle='--', lw=2)
@@ -134,10 +131,10 @@ with tab1:
         plt.xticks(rotation=45)
         plt.tight_layout()
 
-        # Utiliser Streamlit pour afficher la figure
+        # Affichage de la figure
         st.pyplot(plt)
 
-    # Vérifier si des données sont disponibles pour la région sélectionnée
+
     if not region_data.empty:
         plot_time_series(region_data)
     else:
@@ -194,6 +191,6 @@ with tab2:
 # Contenu de l'onglet Modèle
 with tab3:
     st.header("Modèle")
-    st.write("Ici, vous pouvez intégrer des modèles prédictifs, afficher les résultats de modélisation, etc.")
+    st.write("Ici, vous pouvez intégrer des modèles prédictifs, afficher les résultats de modélisation.")
 
 
