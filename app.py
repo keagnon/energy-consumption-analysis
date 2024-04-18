@@ -10,16 +10,19 @@ import folium
 from streamlit_folium import st_folium
 from folium.plugins import MarkerCluster
 
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+
 # Configuration de la page
 st.set_page_config(layout="wide")
 st.title('Analyse de la Consommation Énergétique')
 
 # Chargement des données
 data_path = 'dataset/data_clean.csv'
-data_clean = pd.read_csv(data_path)
+data_clean = pd.read_csv(data_path,nrows=25000)
 
-data_path2 = 'dataset/data_no_clean.csv'
-data_no_clean = pd.read_csv(data_path2, sep=';', header=0, index_col=False)
+data_path2 = 'dataset/Consomation&Mouvement.csv'
+data_no_clean = pd.read_csv(data_path2, sep=';', header=0, index_col=False, nrows=25000)
 
 # Tabs
 tab1, tab2, tab3 = st.tabs(["Visualisation", "Statistique", "Modèle"])
@@ -36,94 +39,120 @@ with tab1:
     st.header("Visualisation de la Consommation Énergétique")
     col1, col2 = st.columns(2)
     with col1:
-        selected_columns = st.multiselect('Choisissez une ou plusieurs colonnes', data_clean.columns)
+
+        numeric_columns = data_clean[data_clean.columns].select_dtypes(include=['float64', 'int64']).columns
+        selected_columns = st.multiselect('Choisissez une ou plusieurs colonnes', numeric_columns)
 
     with col2:
         plot_type = st.selectbox(
             'Choisissez un type de visualisation',
             ['Histogramme', 'Graphique à barres', 'Lineplot', 'Boxplot']
         )
-    col3, col4 = st.columns(2)
 
-    with col3:
-        if selected_columns:
-            if plot_type == 'Histogramme':
-                numeric_columns = data_clean[selected_columns].select_dtypes(include=['float64', 'int64']).columns
-                if len(numeric_columns) > 0:
-                    rows = len(selected_columns) // 2 + (1 if len(selected_columns) % 2 > 0 else 0)
-                    cols = 2
+    if selected_columns:
+        if plot_type == 'Histogramme':
+            numeric_columns = data_clean[selected_columns].select_dtypes(include=['float64', 'int64']).columns
+            if len(numeric_columns) > 0:
+                # Calcul du nombre de lignes et de colonnes en fonction du nombre de colonnes sélectionnées
+                rows = (len(selected_columns) - 1) // 3 + 1  # Nombre de lignes nécessaire
+                cols = min(3, len(selected_columns))  # Au plus trois colonnes par ligne
 
-                    fig = make_subplots(rows=rows, cols=cols, subplot_titles=selected_columns)
-                    for i, col in enumerate(selected_columns, start=1):
-                        row = (i-1) // 2 + 1
-                        col_pos = (i-1) % 2 + 1
-                        fig.add_trace(go.Histogram(x=data_clean[col]), row=row, col=col_pos)
+                # Création de la figure
+                fig = make_subplots(rows=rows, cols=cols, subplot_titles=selected_columns)
 
-                    fig.update_layout(height=400*rows, showlegend=False)
-                    st.plotly_chart(fig)
-                else:
-                    st.error("Veuillez sélectionner des colonnes numériques pour ce type de visualisation.")
+                # Ajout des histogrammes aux positions appropriées dans la figure
+                for i, col in enumerate(selected_columns, start=1):
+                    row = (i - 1) // 3 + 1
+                    col_pos = (i - 1) % 3 + 1
+                    fig.add_trace(go.Histogram(x=data_clean[col]), row=row, col=col_pos)
 
-            elif plot_type == 'Graphique à barres':
+                # Remplissage des graphiques vides avec des traces vides
+                for i in range(len(selected_columns) + 1, rows * cols + 1):
+                    row = (i - 1) // 3 + 1
+                    col_pos = (i - 1) % 3 + 1
+                    fig.add_trace(go.Scatter(), row=row, col=col_pos)
+
+                # Mise à jour de la mise en page pour ajuster la taille de la figure
+                fig.update_layout(width=1600, height=400 * rows)
+
+                # Afficher la figure
+                st.plotly_chart(fig)
+            else:
+                st.error("Veuillez sélectionner des colonnes numériques pour ce type de visualisation.")
+
+
+
+        elif plot_type == 'Graphique à barres':
                 fig = px.bar(data_clean, x=selected_columns[0], y=selected_columns[1:])
+                fig.update_layout(width=1600)
                 st.plotly_chart(fig)
-            elif plot_type == 'Lineplot':
+        elif plot_type == 'Lineplot':
                 fig = px.line(data_clean, x=selected_columns[0], y=selected_columns[1:])
+                fig.update_layout(width=1600)
                 st.plotly_chart(fig)
-            elif plot_type == 'Boxplot':
+        elif plot_type == 'Boxplot':
 
                 numeric_columns = data_clean[selected_columns].select_dtypes(include=['float64', 'int64']).columns
                 if len(numeric_columns) > 0:
                     fig = px.box(data_clean, y=numeric_columns)
+                    fig.update_layout(width=1600)
                     st.plotly_chart(fig)
                 else:
                     st.error("Veuillez sélectionner des colonnes numériques pour ce type de visualisation.")
 
-    with col4:
-        if selected_columns:
-            if plot_type == 'Histogramme':
-                numeric_columns = data_no_clean[selected_columns].select_dtypes(include=['float64', 'int64']).columns
-                if len(numeric_columns) > 0:
 
-                    rows = len(selected_columns) // 2 + (1 if len(selected_columns) % 2 > 0 else 0)
-                    cols = 2
+    data_clean_enriched=data_clean
+    # Assurez-vous que la date est convertie en datetime
+    data_clean_enriched['Date'] = pd.to_datetime(data_clean_enriched['Date'])
 
-                    fig = make_subplots(rows=rows, cols=cols, subplot_titles=selected_columns)
-                    for i, col in enumerate(selected_columns, start=1):
-                        row = (i-1) // 2 + 1
-                        col_pos = (i-1) % 2 + 1
-                        fig.add_trace(go.Histogram(x=data_no_clean[col]), row=row, col=col_pos)
+    # Obtenir la liste des régions uniques pour le selectbox
+    regions = data_clean_enriched['Région'].unique()
+    selected_region = st.selectbox('Choisissez une région', regions)
 
-                    fig.update_layout(height=400*rows, showlegend=False)
-                    st.plotly_chart(fig)
-                else:
-                    st.error("Veuillez sélectionner des colonnes numériques pour ce type de visualisation.")
+    # Filtrer pour la région spécifique choisie
+    region_data = data_clean_enriched[data_clean_enriched['Région'] == selected_region]
 
-            elif plot_type == 'Graphique à barres':
-                fig = px.bar(data_no_clean, x=selected_columns[0], y=selected_columns[1:])
-                st.plotly_chart(fig)
-            elif plot_type == 'Lineplot':
-                fig = px.line(data_no_clean, x=selected_columns[0], y=selected_columns[1:])
-                st.plotly_chart(fig)
-            elif plot_type == 'Boxplot':
+    # Créer le graphique de série temporelle
+    def plot_time_series(region_data):
+        plt.figure(figsize=(15, 7))
+        plt.plot(region_data['Date'], region_data['Consommation brute totale (MW)'], label='Consommation de gaz')
 
-                numeric_columns = data_no_clean[selected_columns].select_dtypes(include=['float64', 'int64']).columns
-                if len(numeric_columns) > 0:
-                    fig = px.box(data_no_clean, y=numeric_columns)
-                    st.plotly_chart(fig)
-                else:
-                    st.error("Veuillez sélectionner des colonnes numériques pour ce type de visualisation.")
+        # Ajouter des marqueurs pour les événements
+        if 'mouvement_social' in region_data.columns:
+            for date in region_data[region_data['mouvement_social']]['Date']:
+                plt.axvline(x=date, color='red', linestyle='--', lw=2)
+
+        # Format de la date sur l'axe x
+        plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))
+        plt.gca().xaxis.set_major_locator(mdates.MonthLocator())
+
+        # Légende et étiquettes
+        plt.legend()
+        plt.title(f'Consommation de gaz pour la région {selected_region}')
+        plt.xlabel('Date')
+        plt.ylabel('Consommation de gaz (MW)')
+        plt.xticks(rotation=45)
+        plt.tight_layout()
+
+        # Utiliser Streamlit pour afficher la figure
+        st.pyplot(plt)
+
+    # Vérifier si des données sont disponibles pour la région sélectionnée
+    if not region_data.empty:
+        plot_time_series(region_data)
+    else:
+        st.write(f"Aucune donnée disponible pour la région sélectionnée: {selected_region}")
 
     # Affichage des données
     with st.expander("Voir les données clean"):
-        data_clean_enriched = pd.read_csv('dataset/data_clean_enriched.csv')
+        data_clean_enriched = pd.read_csv('dataset/data_clean.csv')
         st.dataframe(data_clean_enriched)
 
     with st.expander("Voir les données brutes"):
         st.dataframe(data_no_clean)
 
 # Chargement des données
-data_clean_enriched = pd.read_csv('dataset/data_clean_enriched.csv')
+data_clean_enriched = pd.read_csv('dataset/data_clean.csv',)
 data_clean_enriched['Date'] = pd.to_datetime(data_clean_enriched['Date'])
 
 with tab2:

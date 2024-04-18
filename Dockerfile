@@ -1,23 +1,24 @@
-# Utiliser l'image Miniconda3 comme base
-FROM continuumio/miniconda3:latest
+# Use the official lightweight Python image.
+FROM python:3.8-slim
 
-# Créer le répertoire de travail dans le conteneur
+# Set the working directory in the container
 WORKDIR /app
 
-# Copier le fichier environment.yml dans le répertoire de travail
-COPY environment.yml .
+# Copy the requirements file and README into the working directory
+COPY requirements.txt README.md ./
 
-# Installer les dépendances depuis le fichier environment.yml
-RUN conda env create -f environment.yml
+# Install any dependencies
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Activer l'environnement Conda spécifié
-SHELL ["conda", "run", "-n", "nom_de_votre_environnement", "/bin/bash", "-c"]
+# Copy the rest of your app's code and directories
+COPY . .
 
-# Copier le script de l'application Streamlit dans le répertoire de travail
-COPY app.py .
+# The dataset and notebook directories are covered by the above command
+# COPY dataset/ /app/dataset/
+# COPY notebook/ /app/notebook/
 
-# Exposer le port 8501 pour l'application Streamlit
+# Expose the port Streamlit will run on
 EXPOSE 8501
 
-# Définir la commande pour démarrer l'application Streamlit
-CMD ["conda", "run", "-n", "nom_de_votre_environnement", "streamlit", "run", "--server.port", "8501", "app.py"]
+# The command to run your Streamlit app
+CMD ["streamlit", "run", "app.py"]
