@@ -115,10 +115,11 @@ with tab1:
                     st.error("Veuillez sélectionner des colonnes numériques pour ce type de visualisation.")
 
     # Affichage des données
-    with st.expander("Voir les données"):
-        st.dataframe(data_clean)
+    with st.expander("Voir les données clean"):
+        data_clean_enriched = pd.read_csv('dataset/data_clean_enriched.csv')
+        st.dataframe(data_clean_enriched)
 
-    with st.expander("Voir les données"):
+    with st.expander("Voir les données brutes"):
         st.dataframe(data_no_clean)
 
 # Chargement des données

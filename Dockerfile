@@ -1,17 +1,23 @@
-FROM python:3.9
+# Utiliser l'image Miniconda3 comme base
+FROM continuumio/miniconda3:latest
 
-# Créez le répertoire de travail
+# Créer le répertoire de travail dans le conteneur
 WORKDIR /app
 
-# Copiez les fichiers nécessaires dans le conteneur
-COPY requirements.txt .
+# Copier le fichier environment.yml dans le répertoire de travail
+COPY environment.yml .
+
+# Installer les dépendances depuis le fichier environment.yml
+RUN conda env create -f environment.yml
+
+# Activer l'environnement Conda spécifié
+SHELL ["conda", "run", "-n", "nom_de_votre_environnement", "/bin/bash", "-c"]
+
+# Copier le script de l'application Streamlit dans le répertoire de travail
 COPY app.py .
 
-# Installez les dépendances
-RUN conda install --file requirements.txt -c conda-forge
-
-# Exposez le port utilisé par votre application Streamlit
+# Exposer le port 8501 pour l'application Streamlit
 EXPOSE 8501
 
-# Commande pour démarrer l'application
-CMD ["streamlit", "run", "--server.port", "8501", "app.py"]
+# Définir la commande pour démarrer l'application Streamlit
+CMD ["conda", "run", "-n", "nom_de_votre_environnement", "streamlit", "run", "--server.port", "8501", "app.py"]
