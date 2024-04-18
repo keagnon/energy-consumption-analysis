@@ -57,7 +57,6 @@ Si vous avez déjà Docker installé et fonctionnel sur votre machine, vous pouv
    Cette commande exécute le conteneur Docker et mappe le port 8501 de votre machine au port 8501 du conteneur (ce qui est le port par défaut utilisé par Streamlit). Vous pouvez alors accéder à l'application Streamlit via votre navigateur en allant à l'adresse `http://localhost:8501`.
 
 Assurez-vous de consulter le `Dockerfile` pour comprendre la configuration du conteneur et pour faire d'autres personnalisations si nécessaire.
-```
 
 ## Structure du Projet
 
