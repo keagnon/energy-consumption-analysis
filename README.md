@@ -38,9 +38,26 @@ Pour exécuter cette application en local, suivez les étapes ci-dessous :
    streamlit run app.py
    ```
 
-## Déploiement
+## Déploiement avec Docker
 
-Pour déployer cette application dans un conteneur Docker, veuillez suivre les instructions contenues dans le `Dockerfile`.
+Si vous avez déjà Docker installé et fonctionnel sur votre machine, vous pouvez déployer cette application en construisant et en exécutant un conteneur Docker. Suivez ces instructions :
+
+1. Ouvrez un terminal et naviguez vers le répertoire racine du projet où se trouve le `Dockerfile`.
+
+2. Construisez l'image Docker à l'aide de la commande suivante :
+   ```bash
+   docker build -t energy-consumption-analysis .
+   ```
+   Cette commande construit une image Docker nommée `energy-consumption-analysis` en utilisant le `Dockerfile` situé dans le répertoire courant (représenté par le `.`).
+
+3. Une fois l'image construite, lancez un conteneur en utilisant :
+   ```bash
+   docker run -p 8501:8501 energy-consumption-analysis
+   ```
+   Cette commande exécute le conteneur Docker et mappe le port 8501 de votre machine au port 8501 du conteneur (ce qui est le port par défaut utilisé par Streamlit). Vous pouvez alors accéder à l'application Streamlit via votre navigateur en allant à l'adresse `http://localhost:8501`.
+
+Assurez-vous de consulter le `Dockerfile` pour comprendre la configuration du conteneur et pour faire d'autres personnalisations si nécessaire.
+```
 
 ## Structure du Projet
 
