@@ -16,10 +16,10 @@ st.title('Analyse de la Consommation Énergétique')
 
 # Chargement des données
 data_path = 'dataset/data_clean.csv'
-data_clean = pd.read_csv(data_path,nrows =500)
+data_clean = pd.read_csv(data_path)
 
 data_path2 = 'dataset/data_no_clean.csv'
-data_no_clean = pd.read_csv(data_path2, sep=';', header=0, index_col=False,nrows =500)
+data_no_clean = pd.read_csv(data_path2, sep=';', header=0, index_col=False)
 
 # Tabs
 tab1, tab2, tab3 = st.tabs(["Visualisation", "Statistique", "Modèle"])
