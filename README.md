@@ -1,4 +1,3 @@
-```markdown
 # ENERGY CONSUMPTION ANALYSIS
 
 ## Description
@@ -23,19 +22,19 @@ Pour exécuter cette application en local, suivez les étapes ci-dessous :
 ### Installation
 
 1. Clonez le dépôt :
-   ```
+   ```bash
    git clone git@github.com:keagnon/energy-consumption-analysis.git
    ```
 2. Accédez au répertoire du projet :
-   ```
-   cd ENERGYCONSUMPTIONANALYSIS
+   ```bash
+   cd energy-consumption-analysis
    ```
 3. Installez les dépendances :
-   ```
+   ```bash
    pip install -r requirements.txt
    ```
 4. Exécutez l'application :
-   ```
+   ```bash
    streamlit run app.py
    ```
 
@@ -46,7 +45,7 @@ Pour déployer cette application dans un conteneur Docker, veuillez suivre les i
 ## Structure du Projet
 
 ```
-ENERGYCONSUMPTIONANALYSIS/
+energy-consumption-analysis/
 │
 ├── dataset/                # Contient les datasets utilisés.
 ├── notebook/               # Jupyter notebooks pour l'exploration de données.
@@ -55,8 +54,8 @@ ENERGYCONSUMPTIONANALYSIS/
 ├── .gitignore              # Spécifie les fichiers intentionnellement non suivis à ignorer.
 ├── requirements.txt        # Les dépendances nécessaires pour l'application.
 └── README.md               # Documentation du projet.
-
 ```
+
 
 ## Licence
 
@@ -64,7 +63,5 @@ Ce projet est distribué sous la Licence MIT. Voir le fichier `LICENSE` pour plu
 
 ## Contact
 
-Nom du Créateur - @keagnon
-
-Lien du Projet - git@github.com:keagnon/energy-consumption-analysis.git
-```
+- **Créateur :** [@keagnon](https://github.com/keagnon)
+- **Projet GitHub :** [Energy Consumption Analysis](https://github.com/keagnon/energy-consumption-analysis)
