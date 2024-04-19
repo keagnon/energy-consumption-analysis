@@ -80,4 +80,4 @@ Ce projet est distribué sous la Licence MIT. Voir le fichier `LICENSE` pour plu
 ## Contact
 
 - **Créateur :** [@keagnon](https://github.com/keagnon)
-- **Projet GitHub :** [Energy Consumption Analysis](https://github.com/keagnon/energy-consumption-analysis)
+- **Linkedin :** [Grace GBE](https://www.linkedin.com/in/grace-gbe-306345206/)
