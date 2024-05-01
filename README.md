@@ -14,7 +14,8 @@
 
 ### Interface MLflow
 
-MLflow est utilisé pour le suivi des expériences et la gestion des modèles. Voici à quoi ressemble l'interface MLflow :
+MLflow a été utilisé pour suivre et documenter différentes expériences, y compris le suivi des hyperparamètres, des métriques et le stockage des modèles. Cela permet une reproductibilité et une analyse systématique des performances sur différentes configurations.
+Voici à quoi ressemble l'interface MLflow :
 
 ![Interface MLflow](images/mlflow_energy.png)
 ![Interface MLflow](images/mlf_consumption2.png)
@@ -92,9 +93,6 @@ Les résultats suivants ont été obtenus après l'entraînement des modèles su
 - **RMSE :** 108.13 pour le modèle de base, indiquant la précision générale des prédictions.
 - **MAPE :** 0.0021 pour le modèle amélioré, démontrant une précision relativement élevée en pourcentage des valeurs prédites par rapport aux valeurs réelles.
 
-### Tracking avec MLflow
-
-MLflow a été utilisé pour suivre et documenter différentes expériences, y compris le suivi des hyperparamètres, des métriques et le stockage des modèles. Cela permet une reproductibilité et une analyse systématique des performances sur différentes configurations.
 
 ### Conclusion sur les Modèles
 
