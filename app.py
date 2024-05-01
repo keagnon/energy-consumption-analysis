@@ -10,6 +10,8 @@ import folium
 from streamlit_folium import st_folium
 from folium.plugins import MarkerCluster
 
+import mlflow.pyfunc
+
 # Configuration de la page
 st.set_page_config(layout="wide")
 st.title('Analyse de la Consommation Énergétique')
@@ -147,7 +149,39 @@ with tab2:
 
 # Contenu de l'onglet Modèle
 with tab3:
-    st.header("Modèle")
-    st.write("Ici, vous pouvez intégrer des modèles prédictifs, afficher les résultats de modélisation, etc.")
+    st.header("Prédiction de consommation énergétique")
+    # Chargement du modèle MLflow
+    logged_model = 'runs:/93693469433c47788a34ee6f3c37644f/model_v2'
+    model = mlflow.pyfunc.load_model(logged_model)
+
+    # Création de l'interface utilisateur
+
+    # Saisie des entrées utilisateur
+    heure = st.number_input('Heure', min_value=0, max_value=23, value=12)
+    consommation_gaz_grtgaz = st.number_input('Consommation brute gaz (MW PCS 0°C) - GRTgaz', min_value=0.0, format="%.2f")
+    consommation_gaz_terega = st.number_input('Consommation brute gaz (MW PCS 0°C) - Teréga', min_value=0.0, format="%.2f")
+    consommation_electricite = st.number_input('Consommation brute électricité (MW) - RTE', min_value=0.0, format="%.2f")
+    region = st.selectbox('Région', ['Île-de-France', 'Occitanie', 'Nouvelle-Aquitaine', 'Auvergne-Rhône-Alpes'])
+
+    features_supplementaires = np.random.rand(1, 8)
+
+    # Préparation des données pour le modèle
+    input_data = {
+        'Heure': [heure],
+        'Consommation brute gaz (MW PCS 0°C) - GRTgaz': [consommation_gaz_grtgaz],
+        'Consommation brute gaz (MW PCS 0°C) - Teréga': [consommation_gaz_terega],
+        'Consommation brute électricité (MW) - RTE': [consommation_electricite],
+        'Région_Île-de-France': [1 if region == 'Île-de-France' else 0],
+        'Région_Occitanie': [1 if region == 'Occitanie' else 0],
+        'Région_Nouvelle-Aquitaine': [1 if region == 'Nouvelle-Aquitaine' else 0],
+        'Région_Auvergne-Rhône-Alpes': [1 if region == 'Auvergne-Rhône-Alpes' else 0],
+    }
+    input_df = pd.DataFrame(input_data)
+    input_df = pd.concat([input_df, pd.DataFrame(features_supplementaires, columns=['Feature8', 'Feature9', 'Feature10', 'Feature11', 'Feature12', 'Feature13', 'Feature14', 'Feature15'])], axis=1)
+
+    if st.button('Prédire'):
+        predictions = model.predict(input_df)
+        predicted_value = predictions.iloc[0, 0]
+        st.write(f'Prédiction de la consommation : {predicted_value:.2f}kwh')
 
 

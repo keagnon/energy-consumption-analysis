@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/0/3a128033daf94da0ad65b2b1f39e5418/artifacts
+end_time: 1714592125899
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 3a128033daf94da0ad65b2b1f39e5418
+run_name: model_training_with_social_movement
+run_uuid: 3a128033daf94da0ad65b2b1f39e5418
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1714592111847
+status: 4
+tags: []
+user_id: grace

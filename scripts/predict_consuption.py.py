@@ -27,7 +27,6 @@ def build_model(input_dim):
     model.compile(optimizer=Adam(learning_rate=0.0001), loss='mse', metrics=['mean_absolute_error'])
     return model
 
-# Charger les données
 data = pd.read_csv('dataset/data_clean.csv', delimiter=',')
 
 # Encodage One-Hot de la colonne 'Région'
@@ -35,13 +34,13 @@ encoder = OneHotEncoder()
 region_encoded = encoder.fit_transform(data[['Région']]).toarray()
 region_encoded_df = pd.DataFrame(region_encoded, columns=encoder.get_feature_names_out(['Région']))
 
-# Ajouter les données encodées au dataframe original
 data = pd.concat([data, region_encoded_df], axis=1)
 
 # Nettoyage et préparation des données
 data['Heure'] = pd.to_datetime(data['Heure'], format='%H:%M', errors='coerce').dt.hour
 
 numerical_cols = ['Consommation brute gaz (MW PCS 0°C) - GRTgaz', 'Consommation brute gaz (MW PCS 0°C) - Teréga', 'Consommation brute électricité (MW) - RTE'] + list(region_encoded_df.columns)
+
 for col in numerical_cols:
     if col in data.columns:
         data = remove_outliers(data, col)
@@ -55,14 +54,13 @@ y = data['Consommation brute gaz totale (MW PCS 0°C)']
 
 X_scaled = scaler_X.fit_transform(X.dropna())
 y_scaled = scaler_y.fit_transform(y.values.reshape(-1, 1))
-print(X_scaled.columns)
-# Division des données en ensembles d'entraînement et de test
+
 X_train, X_test, y_train_scaled, y_test_scaled = train_test_split(X_scaled, y_scaled, test_size=0.2, random_state=42)
 
 # Utilisation de MLflow
-#mlflow.set_experiment('energy_consumption_prediction')
+# mlflow.set_experiment('energy_consumption_prediction')
 
-with mlflow.start_run(run_name="logging_models_keras_without_hyperparametre_turning", experiment_id=120055952280529084):
+with mlflow.start_run(run_name="log_keras_model_with_social_mvt_hyperparametre_turning", experiment_id=120055952280529084):
     model = build_model(X_train.shape[1])
     history = model.fit(X_train, y_train_scaled, epochs=10, validation_split=0.1)
     mlflow.log_params({"epochs": 50, "layer1_units": 256, "layer2_units": 128, "layer3_units": 64, "learning_rate": 0.0001})
@@ -97,9 +95,9 @@ from tensorflow.keras.layers import Dropout
 def build_model_v2(input_dim):
     model = Sequential([
         Dense(256, activation='relu', input_shape=(input_dim,)),
-        Dropout(0.2),  # Ajouter une couche Dropout
+        Dropout(0.2),  # Ajout une couche Dropout
         Dense(128, activation='relu'),
-        Dropout(0.2),  # Ajouter une couche Dropout
+        Dropout(0.2),
         Dense(64, activation='relu'),
         Dense(1)
     ])
@@ -116,6 +114,7 @@ with mlflow.start_run(run_name="logging_models_keras_v2", experiment_id=12005595
 
     # Enregistrer le modèle
     mlflow.keras.log_model(model, "model_v2")
+
     # Enregistrer le meilleur modèle avec MLflow
     mlflow.keras.save_model(model, "best_model")
 
@@ -130,5 +129,3 @@ test_rmse = mean_squared_error(scaler_y.inverse_transform(y_test_scaled), scaler
 print("Root Mean Squared Error on Test Data:", test_rmse)
 test_mape = mean_absolute_percentage_error(scaler_y.inverse_transform(y_test_scaled), scaler_y.inverse_transform(model.predict(X_test)))
 print("Mean Absolute Percentage Error on Test Data:", test_mape)
-
-
