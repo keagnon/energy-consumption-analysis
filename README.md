@@ -17,7 +17,7 @@
 MLflow est utilisé pour le suivi des expériences et la gestion des modèles. Voici à quoi ressemble l'interface MLflow :
 
 ![Interface MLflow](images/mlflow_energy.png)
-![Interface MLflow](images/mlflow_energy.png)
+![Interface MLflow](images/mlf_consumption2.png)
 ![Interface MLflow](images/mlflow_energy1.png)
 
 ### Interface Streamlit
