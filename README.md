@@ -1,7 +1,3 @@
-Pour améliorer votre fichier `README.md` et fournir une description complète qui encapsule toutes les fonctionnalités et la structure de votre projet, je vous propose le texte suivant. Ce README inclut des détails sur les modèles utilisés, les technologies, et donne des instructions détaillées pour l'installation, l'exécution et le déploiement.
-
----
-
 # ENERGY CONSUMPTION ANALYSIS
 
 ## Description
@@ -27,6 +23,20 @@ Pour améliorer votre fichier `README.md` et fournir une description complète q
 - **Modèles de Deep Learning:** Utilisation de réseaux de neurones pour prédire la consommation énergétique. Les modèles ont été entraînés avec des caractéristiques telles que l'heure, la consommation brute de gaz et d'électricité, et la présence de mouvements sociaux.
 - **Amélioration avec Hyperparameter Tuning:** Optimisation des modèles pour améliorer la précision des prédictions.
 
+## Structure du Projet
+
+```
+energy-consumption-analysis/
+│
+├── dataset/                # Datasets utilisés pour l'analyse et la modélisation.
+├── models/                 # Modèles entraînés et artefacts MLflow.
+├── notebooks/              # Jupyter Notebooks pour l'exploration et l'analyse des données.
+├── scripts/                # Scripts Python pour le traitement des données et l'entraînement des modèles.
+├── app.py                  # Application Streamlit principale.
+├── Dockerfile              # Pour construire l'image Docker du projet.
+├── requirements.txt        # Dépendances nécessaires à installer.
+└── README.md               # Documentation du projet.
+```
 
 ## Modélisation Avancée et Résultats
 
@@ -70,21 +80,6 @@ MLflow a été utilisé pour suivre et documenter différentes expériences, y c
 
 Les modèles avec dropout ont montré une réduction notable de l'overfitting, avec une amélioration des métriques sur les données de test. Les expériences indiquent que les ajustements d'hyperparamètres, notamment la taille des lots et le taux d'apprentissage, peuvent encore améliorer la précision des prédictions.
 
-## Structure du Projet
-
-```
-energy-consumption-analysis/
-│
-├── dataset/                # Datasets utilisés pour l'analyse et la modélisation.
-├── models/                 # Modèles entraînés et artefacts MLflow.
-├── notebooks/              # Jupyter Notebooks pour l'exploration et l'analyse des données.
-├── scripts/                # Scripts Python pour le traitement des données et l'entraînement des modèles.
-├── app.py                  # Application Streamlit principale.
-├── Dockerfile              # Pour construire l'image Docker du projet.
-├── requirements.txt        # Dépendances nécessaires à installer.
-└── README.md               # Documentation du projet.
-```
-
 ## Commencer
 
 ### Prérequis
@@ -96,9 +91,13 @@ energy-consumption-analysis/
 
 1. Clonez le dépôt :
    ```bash
-   git clone https://github.com/keagnon/energy-consumption-analysis.git
+   git clone git@github.com:keagnon/energy-consumption-analysis.git
    ```
-2. Installez les dépendances :
+2. Accédez au répertoire du projet :
+   ```bash
+   cd energy-consumption-analysis
+   ```
+3. Installez les dépendances :
    ```bash
    pip install -r requirements.txt
    ```
@@ -111,13 +110,25 @@ Exécutez l'application via Streamlit :
 streamlit run app.py
 ```
 
-### Déploiement avec Docker
+## Déploiement avec Docker
 
-Construisez et exécutez le conteneur Docker :
+Si vous avez déjà Docker installé et fonctionnel sur votre machine, vous pouvez déployer cette application en construisant et en exécutant un conteneur Docker. Suivez ces instructions :
 
-```bash
-docker build -t energy-consumption-analysis .
-docker run -p 8501:8501 energy-consumption-analysis
+1. Ouvrez un terminal et naviguez vers le répertoire racine du projet où se trouve le `Dockerfile`.
+
+2. Construisez l'image Docker à l'aide de la commande suivante :
+   ```bash
+   docker build -t energy-consumption-analysis .
+   ```
+   Cette commande construit une image Docker nommée `energy-consumption-analysis` en utilisant le `Dockerfile` situé dans le répertoire courant (représenté par le `.`).
+
+3. Une fois l'image construite, lancez un conteneur en utilisant :
+   ```bash
+   docker run -p 8501:8501 energy-consumption-analysis
+   ```
+   Cette commande exécute le conteneur Docker et mappe le port 8501 de votre machine au port 8501 du conteneur (ce qui est le port par défaut utilisé par Streamlit). Vous pouvez alors accéder à l'application Streamlit via votre navigateur en allant à l'adresse `http://localhost:8501`.
+
+Assurez-vous de consulter le `Dockerfile` pour comprendre la configuration du conteneur et pour faire d'autres personnalisations si nécessaire.
 ```
 
 Accédez à l'application via `http://localhost:8501`.
@@ -129,5 +140,4 @@ Distribué sous la Licence MIT. Voir `LICENSE` pour plus d'informations.
 ## Contact
 
 - **Nom:** Grace GBE
-- **GitHub:** [keagnon](https://github.com/keagnon)
 - **LinkedIn:** [Grace GBE](https://www.linkedin.com/in/grace-gbe-306345206/)
