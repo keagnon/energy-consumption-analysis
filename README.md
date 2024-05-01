@@ -102,8 +102,15 @@ Les modèles avec dropout ont montré une réduction notable de l'overfitting, a
    pip install -r requirements.txt
    ```
 
+## Démarrage des Services
+
 ### Exécution Locale
 
+Exécutez l'application via Mlflow :
+
+```bash
+mlflow ui
+```
 Exécutez l'application via Streamlit :
 
 ```bash
@@ -129,9 +136,7 @@ Si vous avez déjà Docker installé et fonctionnel sur votre machine, vous pouv
    Cette commande exécute le conteneur Docker et mappe le port 8501 de votre machine au port 8501 du conteneur (ce qui est le port par défaut utilisé par Streamlit). Vous pouvez alors accéder à l'application Streamlit via votre navigateur en allant à l'adresse `http://localhost:8501`.
 
 Assurez-vous de consulter le `Dockerfile` pour comprendre la configuration du conteneur et pour faire d'autres personnalisations si nécessaire.
-```
 
-Accédez à l'application via `http://localhost:8501`.
 
 ## Licence
 
