@@ -10,6 +10,24 @@
 - **Analyse Statistique :** Fournit des analyses descriptives et exploratoires pour comprendre les données en profondeur.
 - **Modélisation Prédictive :** Permet aux utilisateurs de former, évaluer et utiliser des modèles prédictifs pour estimer la consommation future basée sur les données historiques et les événements actuels comme les mouvements sociaux.
 
+## Interfaces Utilisateur
+
+### Interface MLflow
+
+MLflow est utilisé pour le suivi des expériences et la gestion des modèles. Voici à quoi ressemble l'interface MLflow :
+
+![Interface MLflow](images/mlflow_energy.png)
+![Interface MLflow](images/mlflow_energy.png)
+![Interface MLflow](images/mlflow_energy1.png)
+
+### Interface Streamlit
+
+Streamlit permet aux utilisateurs de visualiser des données et d'interagir avec des modèles de machine learning en temps réel. Voici un aperçu de l'interface Streamlit :
+
+![Interface Streamlit](images/streamlitui1.png)
+![Interface Streamlit](images/streamlitui2.png)
+![Interface Streamlit](images/streamlitui3.png)
+
 ## Technologies Utilisées
 
 - **Python:** Langage de programmation principal.
