@@ -1,0 +1,9 @@
+artifact_location: /home/grace/Projects_training_CDI/energyconsumptionanalysis/deep_learning_mlflow_artifact
+creation_time: 1714566340811
+experiment_id: '120055952280529084'
+last_update_time: 1714573243982
+lifecycle_stage: active
+name: energy_consumption_prediction
+tags:
+  env: dev
+  version: 1.0.0

@@ -1,0 +1,16 @@
+artifact_uri: file:///home/grace/Projects_training_CDI/energyconsumptionanalysis/mlruns/728002121108669916/4b89a073e763472da560b0a047ecbd0b/artifacts
+deleted_time: 1714573223512
+end_time: 1714572479884
+entry_point_name: ''
+experiment_id: '728002121108669916'
+lifecycle_stage: deleted
+run_id: 4b89a073e763472da560b0a047ecbd0b
+run_name: grandiose-goat-626
+run_uuid: 4b89a073e763472da560b0a047ecbd0b
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1714572272676
+status: 3
+tags: []
+user_id: grace
