@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1714598984713
+current_stage: Production
+description: null
+last_updated_timestamp: 1714598984716
+name: logging_models_choosen
+run_id: 7232f1df7546465c947b7ede9cd8ea75
+run_link: null
+source: /home/grace/Projects_training_CDI/energyconsumptionanalysis/deep_learning_mlflow_artifact/7232f1df7546465c947b7ede9cd8ea75/artifacts/model/requirements.txt
+status: READY
+status_message: null
+storage_location: /home/grace/Projects_training_CDI/energyconsumptionanalysis/deep_learning_mlflow_artifact/7232f1df7546465c947b7ede9cd8ea75/artifacts/model/requirements.txt
+user_id: null
+version: 1

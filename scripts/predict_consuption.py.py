@@ -7,7 +7,13 @@ from tensorflow.keras.layers import Dense
 from tensorflow.keras.optimizers import Adam
 from sklearn.metrics import mean_absolute_error
 import mlflow
+from mlflow.types.schema import Schema
+from mlflow.types.schema import ColSpec
 import mlflow.keras
+from mlflow import MlflowClient
+from mlflow_utils import create_mlflow_experiment,get_mlflow_experiment
+from tensorflow.keras.layers import Dropout
+from sklearn.metrics import mean_squared_error, mean_absolute_percentage_error
 
 def remove_outliers(df, column):
     Q1 = df[column].quantile(0.25)
@@ -78,8 +84,6 @@ with mlflow.start_run(run_name="log_keras_model_with_social_mvt_hyperparametre_t
     mlflow.log_metrics({"train_mae": train_mae})
 
 
-from sklearn.metrics import mean_squared_error, mean_absolute_percentage_error
-
 # Calcul du RMSE
 test_rmse = mean_squared_error(scaler_y.inverse_transform(y_test_scaled), scaler_y.inverse_transform(model.predict(X_test)), squared=False)
 print("Root Mean Squared Error on Test Data:", test_rmse)
@@ -87,10 +91,6 @@ print("Root Mean Squared Error on Test Data:", test_rmse)
 # Calcul du MAPE
 test_mape = mean_absolute_percentage_error(scaler_y.inverse_transform(y_test_scaled), scaler_y.inverse_transform(model.predict(X_test)))
 print("Mean Absolute Percentage Error on Test Data:", test_mape)
-
-
-
-from tensorflow.keras.layers import Dropout
 
 def build_model_v2(input_dim):
     model = Sequential([
@@ -129,3 +129,18 @@ test_rmse = mean_squared_error(scaler_y.inverse_transform(y_test_scaled), scaler
 print("Root Mean Squared Error on Test Data:", test_rmse)
 test_mape = mean_absolute_percentage_error(scaler_y.inverse_transform(y_test_scaled), scaler_y.inverse_transform(model.predict(X_test)))
 print("Mean Absolute Percentage Error on Test Data:", test_mape)
+
+client = MlflowClient()
+
+# create model version
+source = "/home/grace/Projects_training_CDI/energyconsumptionanalysis/deep_learning_mlflow_artifact/7232f1df7546465c947b7ede9cd8ea75/artifacts/model/requirements.txt"
+run_id = "7232f1df7546465c947b7ede9cd8ea75"
+
+# create registered model
+model_name="logging_models_choosen"
+# client.create_registered_model(model_name)
+
+client.create_model_version(name=model_name, source=source, run_id=run_id)
+
+# transition model version stage
+client.transition_model_version_stage(name=model_name, version=1, stage="Production")

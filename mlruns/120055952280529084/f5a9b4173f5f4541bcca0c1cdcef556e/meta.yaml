@@ -1,0 +1,15 @@
+artifact_uri: /home/grace/Projects_training_CDI/energyconsumptionanalysis/deep_learning_mlflow_artifact/f5a9b4173f5f4541bcca0c1cdcef556e/artifacts
+end_time: 1714598859217
+entry_point_name: ''
+experiment_id: '120055952280529084'
+lifecycle_stage: active
+run_id: f5a9b4173f5f4541bcca0c1cdcef556e
+run_name: logging_models_keras_v2
+run_uuid: f5a9b4173f5f4541bcca0c1cdcef556e
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1714598845829
+status: 4
+tags: []
+user_id: grace
