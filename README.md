@@ -37,7 +37,7 @@ Pour exécuter cette application en local, suivez les étapes ci-dessous :
    ```bash
    streamlit run app.py
    ```
-
+mlflow server --port  9000
 ## Déploiement avec Docker
 
 Si vous avez déjà Docker installé et fonctionnel sur votre machine, vous pouvez déployer cette application en construisant et en exécutant un conteneur Docker. Suivez ces instructions :
