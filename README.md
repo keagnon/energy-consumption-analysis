@@ -38,7 +38,7 @@ energy-consumption-analysis/
 
 ## Modèles Implémentés
 
-- **Modèles de Deep Learning:** Utilisation de réseaux de neurones pour prédire la consommation énergétique. Les modèles ont été entraînés avec des caractéristiques telles que l'heure, la consommation brute de gaz et d'électricité, et la présence de mouvements sociaux.
+- **Modèles de Deep Learning:** Utilisation de réseaux de neurones à propagation avant (feedforward neural network) en utilisant l'architecture Sequential de Keras pour prédire la consommation énergétique. Les modèles ont été entraînés avec des caractéristiques telles que l'heure, la consommation brute de gaz et d'électricité, et la présence de mouvements sociaux.
 - **Amélioration avec Hyperparameter Tuning:** Optimisation des modèles pour améliorer la précision des prédictions en utilisant Keras Tuner.
 
 
@@ -53,7 +53,7 @@ Ce projet utilise des modèles de deep learning pour prédire la consommation é
 Deux architectures principales de réseaux de neurones ont été testées et optimisées :
 
 1. **Modèle de Base :**
-   - **Couches :** Dense(256) -> Dense(128) -> Dense(64) -> Dense(1)
+   - **Couches :** Dense(256) -> Dense(128) -> Dense(64) -> Dense(1) (couche de sortie Une seule unité sans fonction d'activation spécifique)
    - **Fonctions d'activation :** ReLU pour toutes les couches cachées.
    - **Optimisation :** Adam avec un taux d'apprentissage de 0.0001.
    - **Perte :** MSE (Mean Squared Error)
