@@ -76,6 +76,10 @@ Les résultats suivants ont été obtenus après l'entraînement des modèles su
 - **RMSE :** 108.13 pour le modèle de base, indiquant la précision générale des prédictions.
 - **MAPE :** 0.0021 pour le modèle amélioré, démontrant une précision relativement élevée en pourcentage des valeurs prédites par rapport aux valeurs réelles.
 
+### Conclusion sur les Modèles
+
+Les modèles avec dropout ont montré une réduction notable de l'overfitting, avec une amélioration des métriques sur les données de test. Les expériences indiquent que les ajustements d'hyperparamètres, notamment la taille des lots et le taux d'apprentissage, peuvent encore améliorer la précision des prédictions.
+
 ## Interfaces Utilisateur
 
 ### Interface MLflow
@@ -97,9 +101,6 @@ Streamlit permet aux utilisateurs de visualiser des données et d'interagir avec
 ![Interface Streamlit](images/streamlitui2.png)
 ![Interface Streamlit](images/streamlitui3.png)
 
-### Conclusion sur les Modèles
-
-Les modèles avec dropout ont montré une réduction notable de l'overfitting, avec une amélioration des métriques sur les données de test. Les expériences indiquent que les ajustements d'hyperparamètres, notamment la taille des lots et le taux d'apprentissage, peuvent encore améliorer la précision des prédictions.
 
 ## Commencer
 
