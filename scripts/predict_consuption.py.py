@@ -65,6 +65,14 @@ X_train, X_test, y_train_scaled, y_test_scaled = train_test_split(X_scaled, y_sc
 
 # Utilisation de MLflow
 # mlflow.set_experiment('energy_consumption_prediction')
+# if __name__=="__main__":
+
+#     experiment_id = create_mlflow_experiment(
+#         experiment_name="energy_consumption_prediction",
+#         artifact_location="deep_learning_mlflow_artifact",
+#         tags={"env": "dev", "version": "1.0.0"},
+#     )
+# # print(f"Experiment ID: {experiment_id}")
 
 with mlflow.start_run(run_name="log_keras_model_with_social_mvt_hyperparametre_turning", experiment_id=120055952280529084):
     model = build_model(X_train.shape[1])
