@@ -10,6 +10,24 @@
 - **Analyse Statistique :** Fournit des analyses descriptives et exploratoires pour comprendre les données en profondeur.
 - **Modélisation Prédictive :** Permet aux utilisateurs de former, évaluer et utiliser des modèles prédictifs pour estimer la consommation future basée sur les données historiques et les événements actuels comme les mouvements sociaux.
 
+## Structure du Projet
+
+```
+energy-consumption-analysis/
+│
+├── dataset/                # Datasets utilisés pour l'analyse et la modélisation.
+├── models/                 # Modèles entraînés et artefacts MLflow.
+├── notebooks/              # Jupyter Notebooks pour l'exploration et l'analyse des données.
+├── scripts/                # Scripts Python pour le traitement des données et l'entraînement des modèles.
+├── app.py                  # Application Streamlit principale.
+├── Dockerfile              # Pour construire l'image Docker du projet.
+├── requirements.txt        # Dépendances nécessaires à installer.
+└── README.md               # Documentation du projet.
+```
+## Architecture du Projet
+
+![architecture globale](images/architecture_projet.png)
+
 ## Interfaces Utilisateur
 
 ### Interface MLflow
@@ -44,20 +62,6 @@ Streamlit permet aux utilisateurs de visualiser des données et d'interagir avec
 - **Modèles de Deep Learning:** Utilisation de réseaux de neurones pour prédire la consommation énergétique. Les modèles ont été entraînés avec des caractéristiques telles que l'heure, la consommation brute de gaz et d'électricité, et la présence de mouvements sociaux.
 - **Amélioration avec Hyperparameter Tuning:** Optimisation des modèles pour améliorer la précision des prédictions.
 
-## Structure du Projet
-
-```
-energy-consumption-analysis/
-│
-├── dataset/                # Datasets utilisés pour l'analyse et la modélisation.
-├── models/                 # Modèles entraînés et artefacts MLflow.
-├── notebooks/              # Jupyter Notebooks pour l'exploration et l'analyse des données.
-├── scripts/                # Scripts Python pour le traitement des données et l'entraînement des modèles.
-├── app.py                  # Application Streamlit principale.
-├── Dockerfile              # Pour construire l'image Docker du projet.
-├── requirements.txt        # Dépendances nécessaires à installer.
-└── README.md               # Documentation du projet.
-```
 
 ## Modélisation Avancée et Résultats
 
