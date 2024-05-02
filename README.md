@@ -39,7 +39,7 @@ energy-consumption-analysis/
 ## Modèles Implémentés
 
 - **Modèles de Deep Learning:** Utilisation de réseaux de neurones pour prédire la consommation énergétique. Les modèles ont été entraînés avec des caractéristiques telles que l'heure, la consommation brute de gaz et d'électricité, et la présence de mouvements sociaux.
-- **Amélioration avec Hyperparameter Tuning:** Optimisation des modèles pour améliorer la précision des prédictions.
+- **Amélioration avec Hyperparameter Tuning:** Optimisation des modèles pour améliorer la précision des prédictions en utilisant Keras Tuner.
 
 
 ## Modélisation Avancée et Résultats
