@@ -28,27 +28,6 @@ energy-consumption-analysis/
 
 ![architecture globale](images/architecture_projet.png)
 
-## Interfaces Utilisateur
-
-### Interface MLflow
-
-MLflow a été utilisé pour suivre et documenter différentes expériences, y compris le suivi des hyperparamètres, des métriques et le stockage des modèles. Cela permet une reproductibilité et une analyse systématique des performances sur différentes configurations.
-Voici à quoi ressemble l'interface MLflow :
-
-![Interface MLflow](images/mlflow_energy.png)
-![Interface MLflow](images/mlf_consumption2.png)
-![Interface MLflow](images/mlflow_energy1.png)
-![Interface MLflow](images/model_register_mlflow.png)
-![Interface MLflow](images/model_production_mlflow.png)
-
-### Interface Streamlit
-
-Streamlit permet aux utilisateurs de visualiser des données et d'interagir avec des modèles de machine learning en temps réel. Voici un aperçu de l'interface Streamlit :
-
-![Interface Streamlit](images/streamlitui1.png)
-![Interface Streamlit](images/streamlitui2.png)
-![Interface Streamlit](images/streamlitui3.png)
-
 ## Technologies Utilisées
 
 - **Python:** Langage de programmation principal.
@@ -97,6 +76,26 @@ Les résultats suivants ont été obtenus après l'entraînement des modèles su
 - **RMSE :** 108.13 pour le modèle de base, indiquant la précision générale des prédictions.
 - **MAPE :** 0.0021 pour le modèle amélioré, démontrant une précision relativement élevée en pourcentage des valeurs prédites par rapport aux valeurs réelles.
 
+## Interfaces Utilisateur
+
+### Interface MLflow
+
+MLflow a été utilisé pour suivre et documenter différentes expériences, y compris le suivi des hyperparamètres, des métriques et le stockage des modèles. Cela permet une reproductibilité et une analyse systématique des performances sur différentes configurations.
+Voici à quoi ressemble l'interface MLflow :
+
+![Interface MLflow](images/mlflow_energy.png)
+![Interface MLflow](images/mlf_consumption2.png)
+![Interface MLflow](images/mlflow_energy1.png)
+![Interface MLflow](images/model_register_mlflow.png)
+![Interface MLflow](images/model_production_mlflow.png)
+
+### Interface Streamlit
+
+Streamlit permet aux utilisateurs de visualiser des données et d'interagir avec des modèles de machine learning en temps réel. Voici un aperçu de l'interface Streamlit :
+
+![Interface Streamlit](images/streamlitui1.png)
+![Interface Streamlit](images/streamlitui2.png)
+![Interface Streamlit](images/streamlitui3.png)
 
 ### Conclusion sur les Modèles
 
