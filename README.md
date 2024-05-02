@@ -160,10 +160,6 @@ Si vous avez déjà Docker installé et fonctionnel sur votre machine, vous pouv
 Assurez-vous de consulter le `Dockerfile` pour comprendre la configuration du conteneur et pour faire d'autres personnalisations si nécessaire.
 
 
-## Licence
-
-Distribué sous la Licence MIT. Voir `LICENSE` pour plus d'informations.
-
 ## Contact
 
 - **Nom:** Grace GBE
