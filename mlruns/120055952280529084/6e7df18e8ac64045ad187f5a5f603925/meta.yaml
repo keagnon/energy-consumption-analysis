@@ -1,0 +1,15 @@
+artifact_uri: /home/grace/Projects_training_CDI/energyconsumptionanalysis/deep_learning_mlflow_artifact/6e7df18e8ac64045ad187f5a5f603925/artifacts
+end_time: 1714592170502
+entry_point_name: ''
+experiment_id: '120055952280529084'
+lifecycle_stage: active
+run_id: 6e7df18e8ac64045ad187f5a5f603925
+run_name: model_training_with_social_movement
+run_uuid: 6e7df18e8ac64045ad187f5a5f603925
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1714592156001
+status: 3
+tags: []
+user_id: grace

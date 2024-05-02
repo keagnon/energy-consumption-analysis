@@ -1,0 +1,15 @@
+artifact_uri: /home/grace/Projects_training_CDI/energyconsumptionanalysis/deep_learning_mlflow_artifact/5ea4bba77db44b8da047143e375ab445/artifacts
+end_time: 1714592918901
+entry_point_name: ''
+experiment_id: '120055952280529084'
+lifecycle_stage: active
+run_id: 5ea4bba77db44b8da047143e375ab445
+run_name: keras_model_tuning
+run_uuid: 5ea4bba77db44b8da047143e375ab445
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1714592918893
+status: 4
+tags: []
+user_id: grace
